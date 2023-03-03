@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewHoliday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/color8"
+        style="@style/Widget.Material3.CardView.Filled">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/holiday_date"
+                android:textSize="20sp"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/txtHoliday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/holidays_name"
+                android:textSize="32sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:layout_below="@id/txtDate"/>
+
+            <TextView
+                android:id="@+id/txtTodayType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtHoliday"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/poppins_italic"
+                android:text="@string/holidays_type"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

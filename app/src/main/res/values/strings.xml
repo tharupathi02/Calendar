@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Calendar</string>
+
+
+    <string name="API_KEY">1543aa3fc9f9c0d0a7164119b7b2494e6e440ef3</string>
+    <string name="HOLIDAYS_BASE_URL">https://calendarific.com/api/v2/holidays?api_key=</string>
+    <string name="COUNTRIES_BASE_URL">https://calendarific.com/api/v2/countries?api_key=</string>
+
+    <string name="today_date">Today Date</string>
+    <string name="today">Today,</string>
+    <string name="no_holiday_today">No Holiday Today</string>
+    <string name="holidays_in_this_month">Holidays in this Month</string>
+    <string name="holiday_date">Holiday Date</string>
+    <string name="holidays_name">Holidays Name</string>
+    <string name="holidays_type">Holidays Type</string>
+    <string name="holiday_description">Holiday Description</string>
+    <string name="date">Date:</string>
+    <string name="holiday_type">Holiday Type</string>
+    <string name="title_activity_go_back_calendar">GoBackCalendar</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="todo">TODO</string>
+    <string name="filter_by_country">Filter By Country</string>
+    <string name="filter_by_month">Filter By Month</string>
+    <string name="filter_by_year">Filter By Year</string>
+    <string name="filter_your_search">Filter Your Search</string>
+    <string name="filter">Filter</string>
+    <string name="no_holidays_found">No Holidays Found</string>
+    <string name="clear">Clear</string>
+    <string name="revise_world_calendar">Revise World Calendar</string>
+    <string name="country">Country</string>
+
+</resources>
