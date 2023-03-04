@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Adapter.HolidaysInMonthAdapter
+import lk.nibm.calendar.Common.Common
 import lk.nibm.calendar.Model.HolidaysModel
 import lk.nibm.calendar.R
 import org.json.JSONObject
@@ -102,8 +103,10 @@ class Dashboard : AppCompatActivity() {
                     }
                     if (currentDay == dateTime.getString("day")){
                         txtHoliday.text = jsonObjectHolidayList.getString("name")
+                        Common.HOLIDAY_NAME = jsonObjectHolidayList.getString("name")
                     } else{
                         txtHoliday.text = "No Holiday Today"
+                        Common.HOLIDAY_NAME = "No Holiday Today"
                     }
                 }
 
