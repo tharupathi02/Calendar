@@ -2,7 +2,6 @@ package lk.nibm.calendar.Common
 
 object Common {
 
-
     var HOLIDAY_NAME: String? = ""
 
     fun getMonthName(month: Int): String {

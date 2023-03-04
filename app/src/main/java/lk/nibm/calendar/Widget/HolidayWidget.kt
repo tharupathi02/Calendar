@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.widget.RemoteViews
+import lk.nibm.calendar.Common.Common
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,24 +23,24 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 /**
  * Implementation of App Widget functionality.
  */
 class HolidayWidget : AppWidgetProvider() {
-
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
+        // There may be multiple widgets active, so update all of them
         val views = RemoteViews(context.packageName, R.layout.holiday_widget)
-
-        // Get the text from the string resource
-        val holiday = Common.HOLIDAY_NAME
-
-        // Set the text to the text view
-        views.setTextViewText(R.id.txtHoliday, holiday)
+        views.setTextViewText(R.id.txtHoliday, Common.HOLIDAY_NAME)
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetIds, views)
-
+        for (appWidgetId in appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
     }
 
     override fun onEnabled(context: Context) {
