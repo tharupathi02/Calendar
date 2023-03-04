@@ -1,10 +1,27 @@
 package lk.nibm.calendar
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
 import android.widget.RemoteViews
 import lk.nibm.calendar.Common.Common
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import lk.nibm.calendar.Adapter.HolidaysInMonthAdapter
+import lk.nibm.calendar.Common.Common
+import lk.nibm.calendar.Model.HolidaysModel
+import lk.nibm.calendar.ui.MainActivity
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Implementation of App Widget functionality.

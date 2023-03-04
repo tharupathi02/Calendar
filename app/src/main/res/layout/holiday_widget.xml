@@ -1,13 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.Calendar.AppWidget.Container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/Theme.Calendar.AppWidgetContainer">
+    android:layout_height="wrap_content
+    android:theme="@style/Theme.Calendar.AppWidgetContainer"
+    android:id="@+id/relativeWidgetLayout">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp">
+        android:padding="15dp"
+        android:layout_centerInParent="true">
 
         <TextView
             android:id="@+id/holiday"
@@ -43,5 +47,5 @@
             android:layout_below="@+id/txtHoliday"/>
 
     </RelativeLayout>
-    
- </RelativeLayout>
+
+</RelativeLayout>
