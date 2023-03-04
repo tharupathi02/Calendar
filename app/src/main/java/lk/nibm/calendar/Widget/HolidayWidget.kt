@@ -21,6 +21,9 @@ class HolidayWidget : AppWidgetProvider() {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetIds, views)
+        for (appWidgetId in appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
     }
 
     override fun onEnabled(context: Context) {

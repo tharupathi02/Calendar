@@ -43,5 +43,5 @@
             android:layout_below="@+id/txtHoliday"/>
 
     </RelativeLayout>
-
-</RelativeLayout>
+    
+ </RelativeLayout>
