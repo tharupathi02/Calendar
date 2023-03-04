@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Calendar.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.Calendar.AppWidgetContainer">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/holiday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/txtHoliday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
+            android:layout_below="@id/holiday"/>
+
+        <TextClock
+            android:id="@+id/txtTodayDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today_date"
+            android:textSize="18sp"
+            android:format12Hour="EEEE, dd MMMM yyyy\nhh:mm:ss a"
+            android:format24Hour="EEEE, dd MMMM yyyy\nHH:mm:ss"
+            android:textAlignment="viewEnd"
+            android:fontFamily="@font/poppins"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/txtHoliday"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
