@@ -24,14 +24,7 @@ import java.util.*
 
 class Dashboard : AppCompatActivity() {
 
-    private lateinit var txtDate: TextView
-    private lateinit var txtMonth: TextView
     private lateinit var txtYear: TextView
-    private lateinit var txtHour: TextView
-    private lateinit var txtMin: TextView
-    private lateinit var txtAMPM: TextView
-    private lateinit var txtDay: TextView
-    private lateinit var txtTodayDate: TextView
     private lateinit var txtHolidaysInThisMonth: TextView
     private lateinit var txtHoliday: TextView
     private lateinit var recyclerViewHolidayInThisMonth: RecyclerView
@@ -135,41 +128,14 @@ class Dashboard : AppCompatActivity() {
     private fun getDateTime() {
         SimpleDateFormat("yyyy-MMM-dd hh:mm:ss a", Locale.getDefault()).format(Date())
 
-        val currentYear = SimpleDateFormat("yyyy",Locale.getDefault()).format(Date())
-        val currentMonth = SimpleDateFormat("MMM",Locale.getDefault()).format(Date())
-        val currentDay = SimpleDateFormat("dd",Locale.getDefault()).format(Date())
-        val day = SimpleDateFormat("EEEE",Locale.getDefault()).format(Date())
-
-        val currentHour = SimpleDateFormat("hh",Locale.getDefault()).format(Date())
-        val currentMin = StringBuilder(":").append(SimpleDateFormat("mm",Locale.getDefault()).format(Date()))
-        val currentAMPM = SimpleDateFormat("a",Locale.getDefault()).format(Date())
-
-        txtDate.text = currentDay
-        txtMonth.text = currentMonth
-        txtYear.text = currentYear
-        txtDay.text = day
-
-        txtHour.text = currentHour
-        txtMin.text = currentMin
-        txtAMPM.text = currentAMPM
-
-        // Set full date
         val longMonth = SimpleDateFormat("MMMM",Locale.getDefault()).format(Date())
-        txtTodayDate.text = StringBuilder().append(currentDay).append(" ").append(longMonth).append(" ").append(currentYear)
 
         txtHolidaysInThisMonth.text = "Holidays in $longMonth"
 
     }
 
     private fun initializeComponents() {
-        txtDate = findViewById(R.id.txtDate)
-        txtMonth = findViewById(R.id.txtMonth)
         txtYear = findViewById(R.id.txtYear)
-        txtHour = findViewById(R.id.txtHour)
-        txtMin = findViewById(R.id.txtMin)
-        txtAMPM = findViewById(R.id.txtAMPM)
-        txtDay = findViewById(R.id.txtDay)
-        txtTodayDate = findViewById(R.id.txtTodayDate)
         txtHolidaysInThisMonth = findViewById(R.id.txtHolidaysInThisMonth)
         txtHoliday = findViewById(R.id.txtHoliday)
         recyclerViewHolidayInThisMonth = findViewById(R.id.recyclerViewHolidayInThisMonth)
