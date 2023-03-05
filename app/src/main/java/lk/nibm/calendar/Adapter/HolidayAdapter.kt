@@ -24,7 +24,11 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
         val month = holidayList[position].holidayMonth
         val monthName = Common.getMonthName(month!!.toInt())
 
-        holder.txtDate.text = StringBuilder(holidayList[position].holidayDate).append(" ").append(monthName).append(" ").append(holidayList[position].holidayYear)
+        //check date and get the date name
+        val date = holidayList[position].holidayDate
+        val dateName = Common.getDateName(date!!.toInt())
+
+        holder.txtDate.text = StringBuilder("").append(holidayList[position].holidayDate).append(dateName).append(" ").append(monthName).append(", ").append(holidayList[position].holidayYear)
         holder.txtHoliday.text = holidayList[position].holidayName
         holder.txtTodayType.text = holidayList[position].holidayPrimaryType
         holder.txtCountry.text = holidayList[position].holidayCountry
