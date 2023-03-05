@@ -34,51 +34,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/welcome"
-                android:layout_marginStart="20dp">
+                android:layout_marginStart="10dp">
 
-                <TextView
+                <TextClock
                     android:id="@+id/txtDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30"
+                    android:format12Hour="dd"
+                    android:textStyle="bold"
                     android:textSize="55sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"/>
 
-                <TextView
+                <TextClock
                     android:id="@+id/txtMonth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="October"
+                    android:format12Hour="MMMM"
                     android:textSize="30sp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_toEndOf="@id/txtDate"
                     android:layout_marginStart="10dp"/>
 
-                <TextView
+                <TextClock
                     android:id="@+id/txtYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2023"
+                    android:format12Hour="yyyy"
                     android:textSize="30sp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_below="@id/txtMonth"
                     android:layout_toEndOf="@id/txtDate"
                     android:layout_marginStart="10dp"
-                    android:translationY="-15dp"/>
+                    android:translationY="-10dp"/>
 
-                <TextView
+                <TextClock
                     android:id="@+id/txtDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tuesday"
+                    android:format12Hour="EEEE"
                     android:textSize="30sp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_below="@id/txtYear"
-                    android:translationY="-30dp"/>
+                    android:translationY="-20dp"/>
 
             </RelativeLayout>
 
@@ -88,7 +96,7 @@
                 android:layout_below="@id/welcome"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp">
+                android:layout_marginEnd="10dp">
 
                 <TextClock
                     android:id="@+id/txtHour"
@@ -185,11 +193,12 @@
                         android:textColor="@color/black"
                         android:layout_below="@id/holiday"/>
 
-                    <TextView
+                    <TextClock
                         android:id="@+id/txtTodayDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/today_date"
+                        android:format12Hour="EEEE, MMMM dd, yyyy"
                         android:textSize="18sp"
                         android:fontFamily="@font/poppins"
                         android:layout_alignParentEnd="true"

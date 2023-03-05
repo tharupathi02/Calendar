@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
+import lk.nibm.calendar.Common.Common
 import lk.nibm.calendar.Model.HolidaysModel
 import lk.nibm.calendar.R
 
@@ -25,7 +26,10 @@ class HolidaysInMonthAdapter(var context: Context, var holidayList: List<Holiday
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.txtDate.text = StringBuilder(holidayList[position].holidayDate).append(" ").append(holidayList[position].holidayMonth).append(" ").append(holidayList[position].holidayYear)
+        val date = holidayList[position].holidayDate
+        val dateName = Common.getDateName(date!!.toInt())
+
+        holder.txtDate.text = StringBuilder("").append(holidayList[position].holidayDate).append(dateName).append(" ").append(holidayList[position].holidayMonth).append(", ").append(holidayList[position].holidayYear)
         holder.txtHoliday.text = holidayList[position].holidayName
         holder.txtTodayType.text = holidayList[position].holidayPrimaryType
 
