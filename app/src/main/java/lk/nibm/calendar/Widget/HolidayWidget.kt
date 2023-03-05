@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.widget.RemoteViews
-import lk.nibm.calendar.Common.Common
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,9 +37,6 @@ class HolidayWidget : AppWidgetProvider() {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetIds, views)
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
-        }
     }
 
     override fun onEnabled(context: Context) {

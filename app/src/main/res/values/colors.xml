@@ -73,6 +73,15 @@
     <color name="color6">#4B56D2</color>
     <color name="color7">#82C3EC</color>
     <color name="color8">#009EFF</color>
+
+    <color name="holiday_color1">#FFED00</color>
+    <color name="holiday_color2">#537FE7</color>
+    <color name="holiday_color3">#256D85</color>
+    <color name="holiday_color4">#E8F6EF</color>
+    <color name="holiday_color5">#898121</color>
+    <color name="holiday_color6">#C21010</color>
+
+
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>

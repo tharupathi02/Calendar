@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Common.Common
 import lk.nibm.calendar.Model.HolidaysModel
@@ -54,6 +56,42 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
             holder.txtCountry.setTextColor(context.resources.getColor(R.color.white))
         }
 
+        // Check the holiday type and set the Icon
+        if (holidayList[position].holidayPrimaryType == "National Holiday") {
+            holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color1))
+        } else if (holidayList[position].holidayPrimaryType == "State Holiday") {
+            holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color2))
+        } else if (holidayList[position].holidayPrimaryType == "Observance") {
+            holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color3))
+        } else if (holidayList[position].holidayPrimaryType == "Public Holiday") {
+            holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color4))
+        } else if (holidayList[position].holidayPrimaryType == "Season") {
+            holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color5))
+        } else {
+            holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color6))
+        }
+
+        holder.cardViewHoliday.setOnClickListener {
+
+            val view: View = LayoutInflater.from(context).inflate(R.layout.holiday_details_bottom_sheet, null)
+            val bottomSheetDialog = BottomSheetDialog(context)
+            bottomSheetDialog.setContentView(view)
+            bottomSheetDialog.show()
+
+            val monthSelected = holidayList[position].holidayMonth
+            val monthNameSelected = Common.getMonthName(monthSelected!!.toInt())
+
+            val dateSelected = holidayList[position].holidayDate
+            val dateNameSelected = Common.getDateName(dateSelected!!.toInt())
+
+            bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayName)?.text = holidayList[position].holidayName
+            bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayDescription)?.text = holidayList[position].holidayDescription
+            bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayDate)?.text = StringBuilder("").append(holidayList[position].holidayDate).append(dateNameSelected).append(" ").append(monthNameSelected).append(", ").append(holidayList[position].holidayYear)
+            bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayPrimary)?.text = holidayList[position].holidayPrimaryType
+            bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayCountry)?.text = holidayList[position].holidayCountry
+
+        }
+
         holder.cardViewHoliday!!.animation = AnimationUtils.loadAnimation(context, R.anim.top_anim)
 
     }
@@ -68,5 +106,6 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
         val txtTodayType: TextView = itemView.findViewById(R.id.txtTodayType)
         val txtCountry: TextView = itemView.findViewById(R.id.txtCountry)
         val cardViewHoliday: MaterialCardView = itemView.findViewById(R.id.cardViewHoliday)
+        val cardViewHolidayType: MaterialCardView = itemView.findViewById(R.id.cardViewHolidayType)
     }
 }
