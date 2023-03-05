@@ -90,40 +90,57 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp">
 
-                <TextView
+                <TextClock
                     android:id="@+id/txtHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00"
-                    android:textSize="45sp"
+                    android:format12Hour="hh"
+                    android:textSize="60sp"
+                    android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"/>
 
-                <TextView
+                <TextClock
                     android:id="@+id/txtMin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=".00"
+                    android:text=":00"
+                    android:format12Hour=":mm"
                     android:textSize="35sp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"
-                    android:layout_toEndOf="@id/txtHour"
-                    android:layout_marginStart="5dp"
-                    android:translationY="10dp"/>
+                    android:layout_toEndOf="@id/txtHour"/>
 
-                <TextView
-                    android:id="@+id/txtAMPM"
+                <TextClock
+                    android:id="@+id/txtSec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text=":00"
+                    android:format12Hour=":ss"
+                    android:textSize="35sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_toEndOf="@id/txtHour"
+                    android:layout_below="@id/txtMin"
+                    android:translationY="-10dp"/>
+
+                <TextClock
+                    android:id="@+id/txtAMPM"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
                     android:text="AM"
+                    android:format12Hour="aa"
+                    android:textAlignment="center"
                     android:textSize="28sp"
                     android:textColor="@color/white"
+                    android:textStyle="bold"
                     android:fontFamily="@font/poppins_bold"
-                    android:layout_below="@id/txtMin"
-                    android:layout_toEndOf="@id/txtHour"
-                    android:layout_marginStart="10dp"
-                    android:translationY="-15dp"/>
+                    android:layout_below="@id/txtHour"
+                    android:translationY="-5dp"/>
 
             </RelativeLayout>
 
