@@ -20,7 +20,6 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolidayAdapter.MyViewHolder {
         return MyViewHolder(LayoutInflater.from(context).inflate(R.layout.holidays, parent, false))
     }
-
     override fun onBindViewHolder(holder: HolidayAdapter.MyViewHolder, position: Int) {
 
         val month = holidayList[position].holidayMonth
@@ -91,8 +90,6 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayCountry)?.text = holidayList[position].holidayCountry
 
         }
-
-        holder.cardViewHoliday!!.animation = AnimationUtils.loadAnimation(context, R.anim.top_anim)
 
     }
 
