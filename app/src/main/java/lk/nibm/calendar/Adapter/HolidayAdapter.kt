@@ -91,6 +91,8 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
 
         }
 
+        holder.cardViewHoliday.animation = AnimationUtils.loadAnimation(context, R.anim.top_anim)
+
     }
 
     override fun getItemCount(): Int {
