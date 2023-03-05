@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.Calendar.AppWidget.Container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content
+    android:layout_height="wrap_content"
     android:theme="@style/Theme.Calendar.AppWidgetContainer"
     android:id="@+id/relativeWidgetLayout">
 
