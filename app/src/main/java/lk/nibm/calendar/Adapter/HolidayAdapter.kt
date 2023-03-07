@@ -25,7 +25,6 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
 
         val month = holidayList[position].holidayMonth
         val monthName = Common.getMonthName(month!!.toInt())
-
         //check date and get the date name
         val date = holidayList[position].holidayDate
         val dateName = Common.getDateName(date!!.toInt())
