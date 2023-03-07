@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Common.Common
@@ -78,6 +80,16 @@ class HolidaysInMonthAdapter(var context: Context, var holidayList: List<Holiday
 
         }
 
+        // Check if Holiday Name contains only "Poya Day" and set the Icon
+        val string = holidayList[position].holidayName
+        val checkString = "Poya Day"
+        if (holidayList[position].holidayName == "Poya Day" || string!!.contains(checkString)) {
+            Glide.with(context).load("https://img.icons8.com/color/5200/null/dharmacakra.png").into(holder.imgHoliday)
+            holder.imgHoliday.visibility = View.VISIBLE
+        } else {
+            holder.imgHoliday.visibility = View.GONE
+        }
+
         holder.cardViewHoliday!!.animation = AnimationUtils.loadAnimation(context, R.anim.top_anim)
 
     }
@@ -88,6 +100,7 @@ class HolidaysInMonthAdapter(var context: Context, var holidayList: List<Holiday
         val txtTodayType: TextView = itemView.findViewById(R.id.txtTodayType)
         val cardViewHoliday: MaterialCardView = itemView.findViewById(R.id.cardViewHoliday)
         val cardViewHolidayType: MaterialCardView = itemView.findViewById(R.id.cardViewHolidayType)
+        val imgHoliday: ImageView = itemView.findViewById(R.id.imgHoliday)
     }
 
 }

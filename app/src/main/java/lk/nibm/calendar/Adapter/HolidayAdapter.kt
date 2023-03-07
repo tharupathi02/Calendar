@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Common.Common
@@ -24,7 +25,6 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
 
         val month = holidayList[position].holidayMonth
         val monthName = Common.getMonthName(month!!.toInt())
-
         //check date and get the date name
         val date = holidayList[position].holidayDate
         val dateName = Common.getDateName(date!!.toInt())
@@ -70,6 +70,16 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
             holder.cardViewHolidayType.setCardBackgroundColor(context.resources.getColor(R.color.holiday_color6))
         }
 
+        // Check if Holiday Name contains only "Poya Day" and set the Icon
+        val string = holidayList[position].holidayName
+        val checkString = "Poya Day"
+        if (holidayList[position].holidayName == "Poya Day" || string!!.contains(checkString)) {
+            Glide.with(context).load("https://img.icons8.com/color/5200/null/dharmacakra.png").into(holder.imgHoliday)
+            holder.imgHoliday.visibility = View.VISIBLE
+        } else {
+            holder.imgHoliday.visibility = View.GONE
+        }
+
         holder.cardViewHoliday.setOnClickListener {
 
             val view: View = LayoutInflater.from(context).inflate(R.layout.holiday_details_bottom_sheet, null)
@@ -106,5 +116,6 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
         val txtCountry: TextView = itemView.findViewById(R.id.txtCountry)
         val cardViewHoliday: MaterialCardView = itemView.findViewById(R.id.cardViewHoliday)
         val cardViewHolidayType: MaterialCardView = itemView.findViewById(R.id.cardViewHolidayType)
+        val imgHoliday: ImageView = itemView.findViewById(R.id.imgHoliday)
     }
 }

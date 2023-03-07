@@ -169,6 +169,18 @@
                 app:cardBackgroundColor="@color/color5"
                 style="@style/Widget.Material3.CardView.Filled">
 
+                <ImageView
+                    android:id="@+id/imgHoliday"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/buddhist"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="end"
+                    android:translationX="35dp"
+                    android:translationY="-40dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"/>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
