@@ -3,12 +3,16 @@ package lk.nibm.calendar.ui
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -16,6 +20,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Adapter.HolidaysInMonthAdapter
 import lk.nibm.calendar.Common.Common
@@ -34,23 +40,80 @@ class Dashboard : AppCompatActivity() {
     private lateinit var cardBoBackYears: MaterialCardView
     private lateinit var cardWorldCalendar: MaterialCardView
     private lateinit var imgHoliday: ImageView
+    private lateinit var txtLocationCountry: TextView
 
     private lateinit var dialog: AlertDialog
 
     private lateinit var holidaysInThisMonth: ArrayList<HolidaysModel>
 
+    private lateinit var fusedLocation: FusedLocationProviderClient
+    var isPermissionGranted: Boolean = false
+    private val LOCATION_REQUEST_CODE = 100
+
+    private var countryId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        fusedLocation = LocationServices.getFusedLocationProviderClient(this)
+        checkLocationPermission()
 
         initializeComponents()
 
         getDateTime()
 
-        getHolidaysInThisMonth()
-
         clickListeners()
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getCountry() {
+        if (isPermissionGranted){
+            val locationResult = fusedLocation.lastLocation
+            locationResult.addOnCompleteListener(this){location ->
+                if (location.isSuccessful) {
+                    val lastLocation = location.result
+                    val geocoder = Geocoder(this, Locale.getDefault())
+                    val addresses = geocoder.getFromLocation(lastLocation!!.latitude, lastLocation.longitude, 1)
+                    val country = addresses?.get(0)!!.countryName
+                    txtLocationCountry.text = country
+                    if (country != null) {
+                        getCountryId(country)
+                    } else {
+                        getHolidaysInThisMonth("LK")
+                    }
+                }
+            }
+        } else {
+            txtLocationCountry.text = "No Location"
+        }
+    }
+
+    private fun getCountryId(name: String) {
+        dialog.show()
+        val url = resources.getString(R.string.COUNTRIES_BASE_URL) + resources.getString(R.string.API_KEY)
+        val resultCountries = StringRequest(Request.Method.GET, url, Response.Listener { response ->
+            try {
+                val jsonObject = JSONObject(response)
+                val jsonObjectResponse = jsonObject.getJSONObject("response")
+                val jsonArrayCountries = jsonObjectResponse.getJSONArray("countries")
+                for (i in 0 until jsonArrayCountries.length()){
+                    val jsonObjectCountry = jsonArrayCountries.getJSONObject(i)
+                    if (jsonObjectCountry.getString("country_name") == name){
+                        countryId = jsonObjectCountry.getString("iso-3166").toString()
+                        getHolidaysInThisMonth(countryId!!)
+                        dialog.dismiss()
+                    }
+                }
+            }catch (e: Exception){
+                Toast.makeText(this, "" + e.message, Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+        }, Response.ErrorListener { error ->
+            Toast.makeText(this, "" + error.message, Toast.LENGTH_SHORT).show()
+        })
+        Volley.newRequestQueue(this).add(resultCountries)
     }
 
     private fun clickListeners() {
@@ -65,11 +128,11 @@ class Dashboard : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun getHolidaysInThisMonth() {
+    private fun getHolidaysInThisMonth(country: String) {
 
         dialog.show()
 
-        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=LK&year=" + txtYear.text.toString()
+        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + txtYear.text.toString()
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->
 
@@ -151,6 +214,7 @@ class Dashboard : AppCompatActivity() {
         cardWorldCalendar = findViewById(R.id.cardWorldCalendar)
         cardBoBackYears = findViewById(R.id.cardBoBackYears)
         imgHoliday = findViewById(R.id.imgHoliday)
+        txtLocationCountry = findViewById(R.id.txtLocationCountry)
 
         holidaysInThisMonth = arrayListOf<HolidaysModel>()
 
@@ -163,4 +227,30 @@ class Dashboard : AppCompatActivity() {
         }
 
     }
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_REQUEST_CODE)
+        } else{
+            isPermissionGranted = true
+            if (isPermissionGranted){
+                getCountry()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        isPermissionGranted = false
+        when (requestCode) {
+            LOCATION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isPermissionGranted = true
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
 }
