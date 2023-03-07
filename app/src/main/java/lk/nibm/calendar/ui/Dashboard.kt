@@ -5,6 +5,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,8 +15,10 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Adapter.HolidaysInMonthAdapter
+import lk.nibm.calendar.Common.Common
 import lk.nibm.calendar.Model.HolidaysModel
 import lk.nibm.calendar.R
 import org.json.JSONObject
@@ -29,6 +33,7 @@ class Dashboard : AppCompatActivity() {
     private lateinit var recyclerViewHolidayInThisMonth: RecyclerView
     private lateinit var cardBoBackYears: MaterialCardView
     private lateinit var cardWorldCalendar: MaterialCardView
+    private lateinit var imgHoliday: ImageView
 
     private lateinit var dialog: AlertDialog
 
@@ -92,11 +97,18 @@ class Dashboard : AppCompatActivity() {
                         holidays.holidayPrimaryType = jsonObjectHolidayList.getString("primary_type")
                         holidays.holidayCountry = jsonObjectHolidayList.getJSONObject("country").getString("name")
                         holidaysInThisMonth.add(holidays)
-                    }
-                    if (currentDay == dateTime.getString("day")){
-                        txtHoliday.text = jsonObjectHolidayList.getString("name")
-                    } else{
-                        txtHoliday.text = "No Holiday Today"
+                        if (currentDay == dateTime.getString("day")){
+                            txtHoliday.text = jsonObjectHolidayList.getString("name")
+                            Common.HOLIDAY_NAME = jsonObjectHolidayList.getString("name")
+                            val string = jsonObjectHolidayList.getString("name")
+                            val checkString = "Poya Day"
+                            if (jsonObjectHolidayList.getString("name") == "Poya Day" || string!!.contains(checkString)) {
+                                Glide.with(this).load("https://img.icons8.com/color/5200/null/dharmacakra.png").into(imgHoliday)
+                                imgHoliday.visibility = View.VISIBLE
+                            } else {
+                                imgHoliday.visibility = View.GONE
+                            }
+                        }
                     }
                 }
 
@@ -109,12 +121,12 @@ class Dashboard : AppCompatActivity() {
                 dialog.dismiss()
 
             }catch (e: Exception){
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
 
         }, Response.ErrorListener {error ->
-            Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, error.message.toString(), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         })
 
@@ -138,6 +150,7 @@ class Dashboard : AppCompatActivity() {
         recyclerViewHolidayInThisMonth = findViewById(R.id.recyclerViewHolidayInThisMonth)
         cardWorldCalendar = findViewById(R.id.cardWorldCalendar)
         cardBoBackYears = findViewById(R.id.cardBoBackYears)
+        imgHoliday = findViewById(R.id.imgHoliday)
 
         holidaysInThisMonth = arrayListOf<HolidaysModel>()
 

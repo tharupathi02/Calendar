@@ -35,5 +35,8 @@
     <string name="clear">Clear</string>
     <string name="revise_world_calendar">Revise World Calendar</string>
     <string name="country">Country</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Holiday</string>
 
 </resources>
