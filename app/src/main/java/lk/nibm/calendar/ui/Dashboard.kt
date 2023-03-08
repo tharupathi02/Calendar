@@ -46,6 +46,7 @@ class Dashboard : AppCompatActivity() {
 
     private lateinit var holidaysInThisMonth: ArrayList<HolidaysModel>
 
+    // Locations
     private lateinit var fusedLocation: FusedLocationProviderClient
     var isPermissionGranted: Boolean = false
     private val LOCATION_REQUEST_CODE = 100
