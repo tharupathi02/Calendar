@@ -2,17 +2,23 @@ package lk.nibm.calendar.ui
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,6 +27,7 @@ import lk.nibm.calendar.Common.Common
 import lk.nibm.calendar.Model.HolidaysModel
 import lk.nibm.calendar.R
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 import java.util.*
 
 class WorldCalendar : AppCompatActivity() {
@@ -35,22 +42,59 @@ class WorldCalendar : AppCompatActivity() {
 
     private lateinit var holidaysList: ArrayList<HolidaysModel>
 
+    // Locations
+    private lateinit var fusedLocation: FusedLocationProviderClient
+    var isPermissionGranted: Boolean = false
+    private val LOCATION_REQUEST_CODE = 100
+
     private var countryId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_world_calendar)
 
+        fusedLocation = LocationServices.getFusedLocationProviderClient(this)
+        checkLocationPermission()
+
         initializeComponents()
 
         clickListeners()
 
-        getHolidays()
-
         bottomSheetDialog()
-
     }
 
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_REQUEST_CODE)
+        } else{
+            isPermissionGranted = true
+            if (isPermissionGranted){
+                getCountry()
+            }
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun getCountry() {
+        if (isPermissionGranted){
+            val locationResult = fusedLocation.lastLocation
+            locationResult.addOnCompleteListener(this){location ->
+                if (location.isSuccessful) {
+                    val lastLocation = location.result
+                    val geocoder = Geocoder(this, Locale.getDefault())
+                    val addresses = geocoder.getFromLocation(lastLocation!!.latitude, lastLocation.longitude, 1)
+                    val country = addresses?.get(0)!!.countryName
+                    if (country != null) {
+                        getCountryId(country)
+
+                    } else {
+                        getHolidays("2023","0","LK")
+                    }
+                }
+            }
+        } else {
+
+        }
+    }
     private fun bottomSheetDialog() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_filter_year_country, null)
@@ -132,7 +176,7 @@ class WorldCalendar : AppCompatActivity() {
         }
 
         btnClearFilter?.setOnClickListener {
-            getHolidays()
+            getHolidays(countryId.toString())
             bottomSheetDialog.dismiss()
         }
 
@@ -149,6 +193,7 @@ class WorldCalendar : AppCompatActivity() {
                     val jsonObjectCountry = jsonArrayCountries.getJSONObject(i)
                     if (jsonObjectCountry.getString("country_name") == name){
                         countryId = jsonObjectCountry.getString("iso-3166").toString()
+                        getHolidays(countryId.toString())
                     }
                 }
             }catch (e: Exception){
@@ -227,11 +272,11 @@ class WorldCalendar : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun getHolidays() {
+    private fun getHolidays(country: String) {
 
         dialog.show()
 
-        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=LK&year=2023"
+        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + SimpleDateFormat("yyyy",Locale.getDefault()).format(Date())
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->
             try {
