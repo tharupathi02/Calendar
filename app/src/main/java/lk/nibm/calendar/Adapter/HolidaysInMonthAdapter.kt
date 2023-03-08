@@ -90,6 +90,7 @@ class HolidaysInMonthAdapter(var context: Context, var holidayList: List<Holiday
             holder.imgHoliday.visibility = View.GONE
         }
 
+
         holder.cardViewHoliday!!.animation = AnimationUtils.loadAnimation(context, R.anim.top_anim)
 
     }
