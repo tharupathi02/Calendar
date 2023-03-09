@@ -31,25 +31,27 @@
             android:layout_height="match_parent"
             android:padding="15dp">
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewHolidayType"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:cardCornerRadius="50dp"
+                app:cardBackgroundColor="@color/color7"
+                app:cardElevation="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="5dp"
+                style="@style/Widget.Material3.CardView.Filled"/>
+
             <TextView
                 android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/holiday_date"
                 android:textSize="20sp"
+                android:layout_toEndOf="@id/cardViewHolidayType"
                 android:fontFamily="@font/poppins"
                 android:textColor="@color/black" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardViewHolidayType"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                app:cardCornerRadius="50dp"
-                app:cardBackgroundColor="@color/color7"
-                app:cardElevation="8dp"
-                android:layout_margin="8dp"
-                style="@style/Widget.Material3.CardView.Filled"/>
 
             <TextView
                 android:id="@+id/txtHoliday"
