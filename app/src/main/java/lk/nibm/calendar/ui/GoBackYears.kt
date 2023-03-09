@@ -59,14 +59,12 @@ class GoBackYears : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_go_back_years)
 
+        initializeComponents()
+
         fusedLocation = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermission()
 
-        initializeComponents()
-
         clickListeners()
-
-
 
         bottomSheetDialog()
 
@@ -85,6 +83,7 @@ class GoBackYears : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getCountry() {
+        dialog.show()
         if (isPermissionGranted){
             val locationResult = fusedLocation.lastLocation
             locationResult.addOnCompleteListener(this){location ->
@@ -95,19 +94,22 @@ class GoBackYears : AppCompatActivity() {
                     val country = addresses?.get(0)!!.countryName
                     if (country != null) {
                         getCountryId(country)
-
                     } else {
-                        getHolidays("2023","0","LK")
+                        getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),"0","LK")
+                        dialog.dismiss()
                     }
+                } else {
+                    getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),"0","LK")
+                    dialog.dismiss()
                 }
             }
         } else {
-
+            getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),"0","LK")
+            dialog.dismiss()
         }
     }
 
     private fun getCountryId(name: String) {
-        dialog.show()
         val url = resources.getString(R.string.COUNTRIES_BASE_URL) + resources.getString(R.string.API_KEY)
         val resultCountries = StringRequest(Request.Method.GET, url, Response.Listener { response ->
             try {
@@ -119,8 +121,6 @@ class GoBackYears : AppCompatActivity() {
                     if (jsonObjectCountry.getString("country_name") == name){
                         countryId = jsonObjectCountry.getString("iso-3166").toString()
                         getHolidays(countryId.toString())
-                        getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),SimpleDateFormat("M",Locale.getDefault()).format(Date()),countryId!!)
-                        dialog.dismiss()
                     }
                 }
             }catch (e: Exception){
@@ -129,10 +129,10 @@ class GoBackYears : AppCompatActivity() {
             }
         }, Response.ErrorListener { error ->
             Toast.makeText(this, "" + error.message, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         })
         Volley.newRequestQueue(this).add(resultCountries)
     }
-
 
     private fun bottomSheetDialog() {
 
@@ -176,7 +176,7 @@ class GoBackYears : AppCompatActivity() {
             val year = spinnerYear?.selectedItem.toString()
             val month = spinnerMonth?.selectedItem.toString()
             val monthNumber = Common.getMonthNumber(month)
-            getHolidays(year, monthNumber,countryId.toString())
+            getHolidays(year, monthNumber, countryId.toString())
             bottomSheetDialog.dismiss()
         }
 
@@ -190,10 +190,8 @@ class GoBackYears : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun getHolidays(year: String, month: String, country : String) {
         dialog.show()
-
         // Clear list
         holidaysList.clear()
-
         val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + year
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->
@@ -255,10 +253,7 @@ class GoBackYears : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getHolidays(country : String) {
-
-        dialog.show()
-
-        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=2023"
+        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + SimpleDateFormat("yyyy",Locale.getDefault()).format(Date())
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->
             try {

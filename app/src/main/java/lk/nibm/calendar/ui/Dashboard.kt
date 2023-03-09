@@ -57,10 +57,10 @@ class Dashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
+        initializeComponents()
+
         fusedLocation = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermission()
-
-        initializeComponents()
 
         getDateTime()
 
@@ -70,6 +70,7 @@ class Dashboard : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getCountry() {
+        dialog.show()
         if (isPermissionGranted){
             val locationResult = fusedLocation.lastLocation
             locationResult.addOnCompleteListener(this){location ->
@@ -83,16 +84,21 @@ class Dashboard : AppCompatActivity() {
                         getCountryId(country)
                     } else {
                         getHolidaysInThisMonth("LK")
+                        dialog.dismiss()
                     }
+                } else {
+                    getHolidaysInThisMonth("LK")
+                    dialog.dismiss()
                 }
             }
         } else {
-            txtLocationCountry.text = "No Location"
+            txtLocationCountry.text = "No Location Found !"
+            getHolidaysInThisMonth("LK")
+            dialog.dismiss()
         }
     }
 
     private fun getCountryId(name: String) {
-        dialog.show()
         val url = resources.getString(R.string.COUNTRIES_BASE_URL) + resources.getString(R.string.API_KEY)
         val resultCountries = StringRequest(Request.Method.GET, url, Response.Listener { response ->
             try {
@@ -104,7 +110,6 @@ class Dashboard : AppCompatActivity() {
                     if (jsonObjectCountry.getString("country_name") == name){
                         countryId = jsonObjectCountry.getString("iso-3166").toString()
                         getHolidaysInThisMonth(countryId!!)
-                        dialog.dismiss()
                     }
                 }
             }catch (e: Exception){
@@ -113,6 +118,7 @@ class Dashboard : AppCompatActivity() {
             }
         }, Response.ErrorListener { error ->
             Toast.makeText(this, "" + error.message, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         })
         Volley.newRequestQueue(this).add(resultCountries)
     }
@@ -130,10 +136,7 @@ class Dashboard : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getHolidaysInThisMonth(country: String) {
-
-        dialog.show()
-
-        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + txtYear.text.toString()
+        val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + SimpleDateFormat("yyyy",Locale.getDefault()).format(Date())
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->
 
@@ -164,9 +167,7 @@ class Dashboard : AppCompatActivity() {
                         if (currentDay == dateTime.getString("day")){
                             txtHoliday.text = jsonObjectHolidayList.getString("name")
                             Common.HOLIDAY_NAME = jsonObjectHolidayList.getString("name")
-                            val string = jsonObjectHolidayList.getString("name")
-                            val checkString = "Poya Day"
-                            if (jsonObjectHolidayList.getString("name") == "Poya Day" || string!!.contains(checkString)) {
+                            if (jsonObjectHolidayList.getString("name").contains("Poya")) {
                                 Glide.with(this).load("https://img.icons8.com/color/5200/null/dharmacakra.png").into(imgHoliday)
                                 imgHoliday.visibility = View.VISIBLE
                             } else {
@@ -185,12 +186,12 @@ class Dashboard : AppCompatActivity() {
                 dialog.dismiss()
 
             }catch (e: Exception){
-                Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "" + e.message.toString(), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
 
         }, Response.ErrorListener {error ->
-            Toast.makeText(this, error.message.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "" + error.message.toString(), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         })
 
@@ -199,12 +200,8 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun getDateTime() {
-        SimpleDateFormat("yyyy-MMM-dd hh:mm:ss a", Locale.getDefault()).format(Date())
-
         val longMonth = SimpleDateFormat("MMMM",Locale.getDefault()).format(Date())
-
         txtHolidaysInThisMonth.text = "Holidays in $longMonth"
-
     }
 
     private fun initializeComponents() {

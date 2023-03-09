@@ -47,16 +47,17 @@ class WorldCalendar : AppCompatActivity() {
     var isPermissionGranted: Boolean = false
     private val LOCATION_REQUEST_CODE = 100
 
+    private var userCountry: String? = null
     private var countryId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_world_calendar)
 
+        initializeComponents()
+
         fusedLocation = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermission()
-
-        initializeComponents()
 
         clickListeners()
 
@@ -75,6 +76,7 @@ class WorldCalendar : AppCompatActivity() {
     }
     @SuppressLint("MissingPermission")
     private fun getCountry() {
+        dialog.show()
         if (isPermissionGranted){
             val locationResult = fusedLocation.lastLocation
             locationResult.addOnCompleteListener(this){location ->
@@ -84,15 +86,20 @@ class WorldCalendar : AppCompatActivity() {
                     val addresses = geocoder.getFromLocation(lastLocation!!.latitude, lastLocation.longitude, 1)
                     val country = addresses?.get(0)!!.countryName
                     if (country != null) {
+                        userCountry = country
                         getCountryId(country)
-
                     } else {
-                        getHolidays("2023","0","LK")
+                        getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),"0","LK")
+                        dialog.dismiss()
                     }
+                } else {
+                    getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),"0","LK")
+                    dialog.dismiss()
                 }
             }
         } else {
-
+            getHolidays(SimpleDateFormat("yyyy",Locale.getDefault()).format(Date()),"0","LK")
+            dialog.dismiss()
         }
     }
     private fun bottomSheetDialog() {
@@ -136,6 +143,7 @@ class WorldCalendar : AppCompatActivity() {
 
         // set countries to spinner from API
         val countries = ArrayList<String>()
+        countries.add("Select Country")
         val url = resources.getString(R.string.COUNTRIES_BASE_URL) + resources.getString(R.string.API_KEY)
         val resultCountries = StringRequest(Request.Method.GET, url, Response.Listener { response ->
             try {
@@ -149,16 +157,20 @@ class WorldCalendar : AppCompatActivity() {
                 val adapterCountry = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, countries)
                 spinnerCountry?.adapter = adapterCountry
             }catch (e: Exception){
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "" + e.message, Toast.LENGTH_SHORT).show()
             }
         }, Response.ErrorListener { error ->
-            Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "" + error.message, Toast.LENGTH_SHORT).show()
         })
         Volley.newRequestQueue(this).add(resultCountries)
 
         spinnerCountry?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                getCountryId(spinnerCountry?.selectedItem.toString())
+                if (spinnerCountry?.selectedItem.toString() == "Select Country" && spinnerCountry?.selectedItemId == 0L){
+                    getCountryId(userCountry.toString())
+                } else {
+                    getCountryId(spinnerCountry?.selectedItem.toString())
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -183,6 +195,7 @@ class WorldCalendar : AppCompatActivity() {
     }
 
     private fun getCountryId(name: String) {
+        dialog.show()
         val url = resources.getString(R.string.COUNTRIES_BASE_URL) + resources.getString(R.string.API_KEY)
         val resultCountries = StringRequest(Request.Method.GET, url, Response.Listener { response ->
             try {
@@ -197,10 +210,12 @@ class WorldCalendar : AppCompatActivity() {
                     }
                 }
             }catch (e: Exception){
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "" + e.message, Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
             }
         }, Response.ErrorListener { error ->
-            Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "" + error.message, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         })
         Volley.newRequestQueue(this).add(resultCountries)
     }
@@ -273,9 +288,6 @@ class WorldCalendar : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getHolidays(country: String) {
-
-        dialog.show()
-
         val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + SimpleDateFormat("yyyy",Locale.getDefault()).format(Date())
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->

@@ -81,13 +81,21 @@ class HolidaysInMonthAdapter(var context: Context, var holidayList: List<Holiday
         }
 
         // Check if Holiday Name contains only "Poya Day" and set the Icon
-        val string = holidayList[position].holidayName
-        val checkString = "Poya Day"
-        if (holidayList[position].holidayName == "Poya Day" || string!!.contains(checkString)) {
+        if (holidayList[position].holidayName!!.contains("Poya") && holidayList[position].holidayPrimaryType!!.contains("Public Holiday")) {
             Glide.with(context).load("https://img.icons8.com/color/5200/null/dharmacakra.png").into(holder.imgHoliday)
             holder.imgHoliday.visibility = View.VISIBLE
+        } else if (holidayList[position].holidayPrimaryType!!.contains("Season")) {
+            Glide.with(context).load("https://img.icons8.com/color/5200/null/island-on-water.png").into(holder.imgHoliday)
+            holder.imgHoliday.visibility = View.VISIBLE
+        } else if (holidayList[position].holidayPrimaryType!!.contains("Observance")) {
+            Glide.with(context).load("https://img.icons8.com/color/5200/null/beach-umbrella.png").into(holder.imgHoliday)
+            holder.imgHoliday.visibility = View.VISIBLE
+        } else if (holidayList[position].holidayPrimaryType!!.contains("Hindu")) {
+            Glide.with(context).load("https://img.icons8.com/color/5200/null/pranava.png").into(holder.imgHoliday)
+            holder.imgHoliday.visibility = View.VISIBLE
         } else {
-            holder.imgHoliday.visibility = View.GONE
+            Glide.with(context).load("").into(holder.imgHoliday)
+            holder.imgHoliday.visibility = View.VISIBLE
         }
 
 
