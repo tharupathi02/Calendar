@@ -1,8 +1,13 @@
+![Logo](https://www.nibm.lk/wp-content/themes/nibm-theme-child/images/main-logo.svg)
 # NIBM Mobile Application Development Final Project - Kotlin
 
-This repository contains the final project for the Mobile Application Development module offered by the National Institute of Business Management (NIBM). The project is implemented using the Kotlin programming language and is focused on developing a mobile application with a user-friendly interface that allows users to manage their daily tasks and schedules.
+This repository contains the final project for the Mobile Application Development module offered by the National Institute of Business Management (NIBM). The project is implemented using the Kotlin programming language and is focused on developing a mobile application with a user-friendly interface.
 
 This repository contains a RESTful API developed using the Calendarific API. The API provides information about worldwide holidays and observances for different countries and regions.
+
+## Documentation
+
+[Documentation]()
 
 
 ## Features
@@ -15,7 +20,7 @@ This App provides the following features:
 
 The following technologies and tools were used to implement the project:
 
--   Kotlin programming language
+-   Kotlin Programming Language
 -   Android Studio IDE
 -   Volley Library
 -   Calendarific API
@@ -36,70 +41,127 @@ The following technologies and tools were used to implement the project:
 
 7.  Once the project is imported, you can open and run it in Android Studio as you would with any other Android project.
 
+## Dependencies
+
+```bash
+dependencies{
+	// Lottie Library (Animated Icon)
+	implementation 'com.airbnb.android:lottie:3.4.0'
+
+	// Volley Library  
+	// https://mvnrepository.com/artifact/com.android.volley/volley  
+	implementation("com.android.volley:volley:1.2.1")
+
+	// Glide Library for Kotlin
+	// https://mvnrepository.com/artifact/com.github.bumptech.glide/glide 
+	implementation("com.github.bumptech.glide:glide:4.14.2")
+}
+```
 ## API Documentation
 
 The API documentation can be found at `https://calendarific.com`. This provides detailed information on how to use each endpoint.
+	
+### API Reference
 
-## Dependencies
+#### Get all items
 
-    dependencies{
-	    // Lottie Library (Animated Icon)
-	    implementation 'com.airbnb.android:lottie:3.4.0'
-	    
-	    // Volley Library  
-	    // https://mvnrepository.com/artifact/com.android.volley/volley  
-	    implementation("com.android.volley:volley:1.2.1")
-	}
+```bash
+  /api/v2/holidays?api_key=<API_KEY>&country=<COUNTRY_CODE>&year=<YEAR>
+```
 
-## Request through the Holidays API
+| Parameter | Type     | Description                				|
+| :-------- | :------- | :------------------------------------------|
+| `api_key` | `string` | **Required**. Your API key 				|
+| `country` | `string` | Your Country Code (US, UK, AU, LK) 		|
+| `year` 	| `string` | The year you want to return the Holidays 	|
 
-    @SuppressLint("NotifyDataSetChanged")  
-    private fun getHolidays() {  
-  
-	    dialog.show()  
-  
-	    val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=LK&year=2023"  
-	    val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->  
-	    try {  
-            val jsonObject = JSONObject(response)  
-            val jsonObjectResponse = jsonObject.getJSONObject("response")  
-            val jsonArrayHolidays = jsonObjectResponse.getJSONArray("holidays")  
-  
-            for (i in 0 until jsonArrayHolidays.length()){  
-                val jsonObjectHolidayList = jsonArrayHolidays.getJSONObject(i)  
-                val date = jsonObjectHolidayList.getJSONObject("date")  
-                val dateTime = date.getJSONObject("datetime")  
-                val holidays = HolidaysModel()  
-                holidays.holidayName = jsonObjectHolidayList.getString("name")  
-                holidays.holidayDescription = jsonObjectHolidayList.getString("description")  
-                holidays.holidayDate = dateTime.getString("day")  
-                holidays.holidayMonth = dateTime.getString("month")  
-                holidays.holidayYear = dateTime.getString("year")  
-                holidays.holidayPrimaryType = jsonObjectHolidayList.getString("primary_type")  
-                holidays.holidayCountry = jsonObjectHolidayList.getJSONObject("country").getString("name")  
-                holidaysList.add(holidays)  
-            }  
-            
-            // Pass holidays to adapter
-            val adapter = HolidayAdapter(this, holidaysList)  
-            recyclerViewWorldCalendar.setHasFixedSize(true)  
-            recyclerViewWorldCalendar.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)  
-            recyclerViewWorldCalendar.adapter = adapter  
-            adapter.notifyDataSetChanged()  
-            dialog.dismiss()  
-  
-        }catch (e: Exception){  
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()  
-            dialog.dismiss()  
-        }  
-  
-	    }, Response.ErrorListener { error ->  
-		    Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()  
-	        dialog.dismiss()  
-	    })  
-  
-	    Volley.newRequestQueue(this).add(result)  
+#### An Example Request for All Holidays in the United States for 2019
+
+```bash
+  https://calendarific.com/api/v2/holidays?&api_key=baa9dc110aa712sd3a9fa2a3dwb6c01d4c875950dc32vs&country=US&year=2019
+```
+
+#### API response that executes successfully
+
+```http
+  {
+    "meta": {
+        "code": 200
+    },
+    "response": {
+        "holidays": [
+            {
+                "name": "Name of holiday goes here",
+                "description": "Description of holiday goes here",
+                "date": {
+                    "iso": "2018-12-31",
+                    "datetime": {
+                        "year": 2018,
+                        "month": 12,
+                        "day": 31
+                    }
+                },
+                "type": [
+                    "Type of Observance goes here"
+                ]
+            }
+        ]
     }
+}
+```
+
+
+### Request through the Holidays API
+
+```bash
+@SuppressLint("NotifyDataSetChanged")  
+private fun getHolidays() {  
+  
+	dialog.show()  
+
+	val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=LK&year=2023"  
+	val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->  
+	try {  
+		val jsonObject = JSONObject(response)  
+		val jsonObjectResponse = jsonObject.getJSONObject("response")  
+		val jsonArrayHolidays = jsonObjectResponse.getJSONArray("holidays")  
+
+		for (i in 0 until jsonArrayHolidays.length()){  
+			val jsonObjectHolidayList = jsonArrayHolidays.getJSONObject(i)  
+			val date = jsonObjectHolidayList.getJSONObject("date")  
+			val dateTime = date.getJSONObject("datetime")  
+			val holidays = HolidaysModel()  
+			holidays.holidayName = jsonObjectHolidayList.getString("name")  
+			holidays.holidayDescription = jsonObjectHolidayList.getString("description")  
+			holidays.holidayDate = dateTime.getString("day")  
+			holidays.holidayMonth = dateTime.getString("month")  
+			holidays.holidayYear = dateTime.getString("year")  
+			holidays.holidayPrimaryType = jsonObjectHolidayList.getString("primary_type")  
+			holidays.holidayCountry = jsonObjectHolidayList.getJSONObject("country").getString("name")  
+			holidaysList.add(holidays)  
+		}  
+
+		// Pass holidays to adapter
+		val adapter = HolidayAdapter(this, holidaysList)  
+		recyclerViewWorldCalendar.setHasFixedSize(true)  
+		recyclerViewWorldCalendar.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)  
+		recyclerViewWorldCalendar.adapter = adapter  
+		adapter.notifyDataSetChanged()  
+		dialog.dismiss()  
+
+	}catch (e: Exception){  
+		Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()  
+		dialog.dismiss()  
+	}  
+
+	}, Response.ErrorListener { error ->  
+		Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()  
+		dialog.dismiss()  
+	})  
+
+	Volley.newRequestQueue(this).add(result)  
+}
+```
 
 ## Contributors
 
