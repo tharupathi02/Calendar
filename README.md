@@ -27,7 +27,7 @@ This repository contains a RESTful API developed using the Calendarific API. The
 
 ## Documentation
 
-[Documentation](https://nibm-my.sharepoint.com/personal/cohdse221f-024_student_nibm_lk/Documents/MAD%20Assessment%204%201.pdf?login_hint=COHDSE221F-024%40student.nibm.lk)
+[Documentation](https://nibm-my.sharepoint.com/personal/cohdse221f-024_student_nibm_lk/Documents/MAD%20Assessment%204%201.pdf?login_hint=COHDSE221F-024%40student.nibm.lk target="_blank")
 
 
 ## Features
