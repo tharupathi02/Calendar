@@ -5,6 +5,26 @@ This repository contains the final project for the Mobile Application Developmen
 
 This repository contains a RESTful API developed using the Calendarific API. The API provides information about worldwide holidays and observances for different countries and regions.
 
+
+## Table of Content
+
+* [NIBM Mobile Application Development Final Project - Kotlin](https://github.com/tharupathi02/Calendar#nibm-mobile-application-development-final-project---kotlin)
+    * [Documentation](https://github.com/tharupathi02/Calendar#documentation)
+    * [Features](https://github.com/tharupathi02/Calendar#features)
+    * [Technologies Used](https://github.com/tharupathi02/Calendar#technologies-used)
+    * [How to Open the Application](https://github.com/tharupathi02/Calendar#how-to-open-the-application)
+    * [Dependencies](https://github.com/tharupathi02/Calendar#dependencies)
+    * [API Documentation](https://github.com/tharupathi02/Calendar#api-documentation)
+        * [API Reference](https://github.com/tharupathi02/Calendar#api-reference)
+            * [Get all items](https://github.com/tharupathi02/Calendar#get-all-items)
+            * [An Example Request for All Holidays in the United States for 2019](https://github.com/tharupathi02/Calendar#an-example-request-for-all-holidays-in-the-united-states-for-2019)
+            * [API response that executes successfully](https://github.com/tharupathi02/Calendar#api-response-that-executes-successfully)
+        * [Request through the Holidays API](https://github.com/tharupathi02/Calendar#request-through-the-holidays-api)
+    * [Contributors](https://github.com/tharupathi02/Calendar#contributors)
+    * [License](https://github.com/tharupathi02/Calendar#license)
+    * [Screenshots](https://github.com/tharupathi02/Calendar#screenshots)
+    
+
 ## Documentation
 
 [Documentation]()
