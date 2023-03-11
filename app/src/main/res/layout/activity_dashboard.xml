@@ -18,6 +18,16 @@
             android:background="@drawable/round_bottom"
             android:backgroundTint="@color/light_primary">
 
+            <ImageView
+                android:id="@+id/imgTimeStatus"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/buddhist"
+                android:scaleType="centerCrop"
+                android:layout_alignParentEnd="true"
+                android:translationX="30dp"
+                android:translationY="-40dp"/>
+
             <TextView
                 android:id="@+id/welcome"
                 android:layout_width="wrap_content"
@@ -28,19 +38,6 @@
                 android:fontFamily="@font/poppins"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"/>
-
-            <TextView
-                android:id="@+id/txtLocationCountry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"/>
 
             <RelativeLayout
@@ -54,8 +51,9 @@
                     android:id="@+id/txtDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
+                    android:text="@string/date_dashboard"
                     android:format12Hour="dd"
+                    android:format24Hour="dd"
                     android:textStyle="bold"
                     android:textSize="55sp"
                     android:textColor="@color/white"
@@ -65,8 +63,9 @@
                     android:id="@+id/txtMonth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="October"
+                    android:text="@string/month"
                     android:format12Hour="MMMM"
+                    android:format24Hour="MMMM"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -78,8 +77,9 @@
                     android:id="@+id/txtYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2023"
+                    android:text="@string/year"
                     android:format12Hour="yyyy"
+                    android:format24Hour="yyyy"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -93,8 +93,9 @@
                     android:id="@+id/txtDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tuesday"
+                    android:text="@string/date_of_week"
                     android:format12Hour="EEEE"
+                    android:format24Hour="EEEE"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -109,15 +110,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/welcome"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="15dp">
 
                 <TextClock
                     android:id="@+id/txtHour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00"
+                    android:text="@string/_00"
                     android:format12Hour="hh"
+                    android:format24Hour="hh"
                     android:textSize="60sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
@@ -128,8 +130,9 @@
                     android:id="@+id/txtMin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=":00"
+                    android:text="@string/_00"
                     android:format12Hour=":mm"
+                    android:format24Hour=":mm"
                     android:textSize="35sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -140,8 +143,9 @@
                     android:id="@+id/txtSec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=":00"
+                    android:text="@string/_00"
                     android:format12Hour=":ss"
+                    android:format24Hour=":ss"
                     android:textSize="35sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
@@ -154,8 +158,9 @@
                     android:id="@+id/txtAMPM"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="AM"
+                    android:text="@string/am_pm"
                     android:format12Hour="aa"
+                    android:format24Hour="aa"
                     android:textAlignment="center"
                     android:textSize="28sp"
                     android:textColor="@color/white"
@@ -165,6 +170,17 @@
                     android:translationY="-5dp"/>
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtLocationCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:text="Sri Lanka"
+                android:fontFamily="@font/poppins"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
 
@@ -225,6 +241,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/today_date"
                         android:format12Hour="EEEE, MMMM dd, yyyy"
+                        android:format24Hour="EEEE, MMMM dd, yyyy"
                         android:textSize="18sp"
                         android:fontFamily="@font/poppins"
                         android:layout_alignParentEnd="true"
@@ -244,7 +261,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardBoBackYears"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="140dp"
                 android:layout_margin="10dp"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="20dp"
@@ -265,9 +282,10 @@
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/txtCountryNameInCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Go Back Years"
+                        android:text="@string/last_holidays_in_country_name"
                         android:textSize="18sp"
                         android:fontFamily="@font/poppins"
                         android:textColor="@color/black"
@@ -281,7 +299,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardWorldCalendar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="140dp"
                 android:layout_margin="10dp"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="20dp"
@@ -304,7 +322,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="World Calendar"
+                        android:text="@string/world_calendar"
                         android:textSize="18sp"
                         android:fontFamily="@font/poppins"
                         android:textColor="@color/black"
@@ -329,6 +347,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/holidays_in_this_month"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:fontFamily="@font/poppins"/>
 
             <androidx.recyclerview.widget.RecyclerView

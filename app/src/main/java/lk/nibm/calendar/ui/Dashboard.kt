@@ -40,7 +40,9 @@ class Dashboard : AppCompatActivity() {
     private lateinit var cardBoBackYears: MaterialCardView
     private lateinit var cardWorldCalendar: MaterialCardView
     private lateinit var imgHoliday: ImageView
+    private lateinit var imgTimeStatus: ImageView
     private lateinit var txtLocationCountry: TextView
+    private lateinit var txtCountryNameInCard: TextView
 
     private lateinit var dialog: AlertDialog
 
@@ -80,6 +82,7 @@ class Dashboard : AppCompatActivity() {
                     val addresses = geocoder.getFromLocation(lastLocation!!.latitude, lastLocation.longitude, 1)
                     val country = addresses?.get(0)!!.countryName
                     txtLocationCountry.text = country
+                    txtCountryNameInCard.text = "Last Holidays in\n $country"
                     if (country != null) {
                         getCountryId(country)
                     } else {
@@ -202,6 +205,19 @@ class Dashboard : AppCompatActivity() {
     private fun getDateTime() {
         val longMonth = SimpleDateFormat("MMMM",Locale.getDefault()).format(Date())
         txtHolidaysInThisMonth.text = "Holidays in $longMonth"
+
+        // Check time status (Morning, Afternoon, Evening, Night) and set image
+        val time = SimpleDateFormat("HH",Locale.getDefault()).format(Date())
+        if (time.toInt() in 0..11){
+            Glide.with(this).load("https://cdn-icons-png.flaticon.com/512/2584/2584049.png").into(imgTimeStatus)
+        }else if (time.toInt() in 12..16){
+            Glide.with(this).load("https://cdn-icons-png.flaticon.com/512/7774/7774377.png").into(imgTimeStatus)
+        } else if (time.toInt() in 17..19){
+            Glide.with(this).load("https://cdn-icons-png.flaticon.com/512/577/577600.png").into(imgTimeStatus)
+        } else if (time.toInt() in 20..23){
+            Glide.with(this).load("https://cdn-icons-png.flaticon.com/512/7687/7687113.png").into(imgTimeStatus)
+        }
+
     }
 
     private fun initializeComponents() {
@@ -212,7 +228,9 @@ class Dashboard : AppCompatActivity() {
         cardWorldCalendar = findViewById(R.id.cardWorldCalendar)
         cardBoBackYears = findViewById(R.id.cardBoBackYears)
         imgHoliday = findViewById(R.id.imgHoliday)
+        imgTimeStatus = findViewById(R.id.imgTimeStatus)
         txtLocationCountry = findViewById(R.id.txtLocationCountry)
+        txtCountryNameInCard = findViewById(R.id.txtCountryNameInCard)
 
         holidaysInThisMonth = arrayListOf<HolidaysModel>()
 

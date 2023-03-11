@@ -160,7 +160,7 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
                     val alarmItem = AlarmItem(holidayList[position].holidayName.toString(), holidayList[position].holidayDescription.toString(), day.toString(), month.toString(), year.toString(), hour.toString(), minute.toString())
                     alarmItem.let(scheduler::schedule)
                     // Schedule the alarm message to be displayed
-                    Snackbar.make(holder.cardViewHoliday, "Alarm Scheduled for ${hour}:${minute} on ${day}/${month}/${year}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(holder.cardViewHoliday, "Reminder Set for ${holidayList[position].holidayName.toString()} at ${hour - 12}:${minute} on ${day}${Common.getDateName(day.toInt())} ${Common.getMonthName(month + 1)}, ${year.toString()}", Snackbar.LENGTH_LONG).show()
                 }
 
             }
