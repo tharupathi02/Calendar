@@ -33,10 +33,19 @@
     <string name="filter">Filter</string>
     <string name="no_holidays_found">No Holidays Found</string>
     <string name="clear">Clear</string>
-    <string name="revise_world_calendar">Revise World Calendar</string>
+    <string name="revise_world_calendar">World Calendar</string>
     <string name="country">Country</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Holiday</string>
+    <string name="_00">00</string>
+    <string name="am_pm">AM/PM</string>
+    <string name="date_of_week">Date of week</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
+    <string name="date_dashboard">D</string>
+    <string name="last_holidays_in_country_name">Last Holidays in\nCountry Name</string>
+    <string name="world_calendar">World Calendar</string>
+    <string name="local_calendar">Local Calendar</string>
 
 </resources>
