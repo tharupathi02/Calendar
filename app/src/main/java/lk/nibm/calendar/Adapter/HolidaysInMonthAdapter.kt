@@ -1,6 +1,7 @@
 package lk.nibm.calendar.Adapter
 
 import android.content.Context
+import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,11 @@ import com.google.android.material.card.MaterialCardView
 import lk.nibm.calendar.Common.Common
 import lk.nibm.calendar.Model.HolidaysModel
 import lk.nibm.calendar.R
+import java.util.*
 
 class HolidaysInMonthAdapter(var context: Context, var holidayList: List<HolidaysModel>) : RecyclerView.Adapter<HolidaysInMonthAdapter.MyViewHolder>() {
 
+    lateinit var speech: TextToSpeech
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(LayoutInflater.from(context).inflate(R.layout.holidays_in_month, parent, false))
@@ -77,6 +80,28 @@ class HolidaysInMonthAdapter(var context: Context, var holidayList: List<Holiday
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayDate)?.text = StringBuilder("").append(holidayList[position].holidayDate).append(dateNameSelected).append(" ").append(holidayList[position].holidayMonth).append(", ").append(holidayList[position].holidayYear)
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayPrimary)?.text = holidayList[position].holidayPrimaryType
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayCountry)?.text = holidayList[position].holidayCountry
+            val cardViewAudioSpeech = bottomSheetDialog.findViewById<MaterialCardView>(R.id.cardViewAudioSpeech)
+            val cardViewAudioStop = bottomSheetDialog.findViewById<MaterialCardView>(R.id.cardViewAudioStop)
+
+            cardViewAudioSpeech?.setOnClickListener {
+                val text = holidayList[position].holidayDescription
+                speech = TextToSpeech(context) { status ->
+                    if (status != TextToSpeech.ERROR) {
+                        speech.language = Locale.US
+                        speech.setSpeechRate(0.8f)
+                        speech.speak(text, TextToSpeech.QUEUE_FLUSH, null)
+                        cardViewAudioStop?.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            cardViewAudioStop?.setOnClickListener {
+                if (speech != null) {
+                    speech.stop()
+                    speech.shutdown()
+                    cardViewAudioStop.visibility = View.GONE
+                }
+            }
 
         }
 

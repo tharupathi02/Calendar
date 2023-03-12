@@ -4,6 +4,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
+import android.speech.tts.Voice
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +32,8 @@ import lk.nibm.calendar.R
 import java.util.*
 
 class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>) : RecyclerView.Adapter<HolidayAdapter.MyViewHolder>() {
+
+    lateinit var speech: TextToSpeech
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolidayAdapter.MyViewHolder {
         return MyViewHolder(LayoutInflater.from(context).inflate(R.layout.holidays, parent, false))
@@ -121,6 +126,28 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayDate)?.text = StringBuilder("").append(holidayList[position].holidayDate).append(dateNameSelected).append(" ").append(monthNameSelected).append(", ").append(holidayList[position].holidayYear)
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayPrimary)?.text = holidayList[position].holidayPrimaryType
             bottomSheetDialog.findViewById<TextView>(R.id.txtHolidayCountry)?.text = holidayList[position].holidayCountry
+            val cardViewAudioSpeech = bottomSheetDialog.findViewById<MaterialCardView>(R.id.cardViewAudioSpeech)
+            val cardViewAudioStop = bottomSheetDialog.findViewById<MaterialCardView>(R.id.cardViewAudioStop)
+
+            cardViewAudioSpeech?.setOnClickListener {
+                val text = holidayList[position].holidayDescription
+                speech = TextToSpeech(context) { status ->
+                    if (status != TextToSpeech.ERROR) {
+                        speech.language = Locale.US
+                        speech.setSpeechRate(0.8f)
+                        speech.speak(text, TextToSpeech.QUEUE_FLUSH, null)
+                        cardViewAudioStop?.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            cardViewAudioStop?.setOnClickListener {
+                if (speech != null) {
+                    speech.stop()
+                    speech.shutdown()
+                    cardViewAudioStop.visibility = View.GONE
+                }
+            }
 
         }
 
@@ -160,7 +187,7 @@ class HolidayAdapter(var context: Context, var holidayList: List<HolidaysModel>)
                     val alarmItem = AlarmItem(holidayList[position].holidayName.toString(), holidayList[position].holidayDescription.toString(), day.toString(), month.toString(), year.toString(), hour.toString(), minute.toString())
                     alarmItem.let(scheduler::schedule)
                     // Schedule the alarm message to be displayed
-                    Snackbar.make(holder.cardViewHoliday, "Reminder Set for ${holidayList[position].holidayName.toString()} at ${hour - 12}:${minute} on ${day}${Common.getDateName(day.toInt())} ${Common.getMonthName(month + 1)}, ${year.toString()}", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(holder.cardViewHoliday, "Reminder Set for ${holidayList[position].holidayName.toString()} at ${hour - 12}:${minute} on ${day}${Common.getDateName(day.toInt())} ${Common.getMonthName(month + 1)}, $year", Snackbar.LENGTH_LONG).show()
                 }
 
             }

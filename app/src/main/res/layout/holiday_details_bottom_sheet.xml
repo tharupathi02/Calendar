@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="15dp"
     android:backgroundTint="@color/white">
 
     <com.google.android.material.card.MaterialCardView
@@ -115,6 +115,54 @@
                 android:textColor="@color/black"/>
 
         </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="end">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardViewAudioSpeech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardElevation="5dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/white"
+            style="@style/Widget.Material3.CardView.Elevated">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/audio_wave"
+                android:scaleType="centerCrop"
+                android:padding="8dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardViewAudioStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardElevation="5dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/white"
+            android:visibility="gone"
+            style="@style/Widget.Material3.CardView.Elevated">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/stop"
+                android:scaleType="centerCrop"
+                android:padding="8dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

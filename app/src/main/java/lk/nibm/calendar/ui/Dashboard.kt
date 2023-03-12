@@ -83,6 +83,7 @@ class Dashboard : AppCompatActivity() {
                     val country = addresses?.get(0)!!.countryName
                     txtLocationCountry.text = country
                     txtCountryNameInCard.text = "Last Holidays in\n $country"
+                    txtCountryNameInCard.isSelected = true
                     if (country != null) {
                         getCountryId(country)
                     } else {
