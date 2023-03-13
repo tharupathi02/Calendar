@@ -2,7 +2,7 @@
     <string name="app_name">Holify</string>
 
 
-    <string name="API_KEY">327e6afe0d7e9b6f98d330716771f886659752f5</string>
+    <string name="API_KEY">5d9ab05f2d22bb40ba4916700c1292fd0aa2ae19</string>
     <string name="HOLIDAYS_BASE_URL">https://calendarific.com/api/v2/holidays?api_key=</string>
     <string name="COUNTRIES_BASE_URL">https://calendarific.com/api/v2/countries?api_key=</string>
 
