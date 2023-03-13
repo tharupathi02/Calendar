@@ -288,6 +288,7 @@ class WorldCalendar : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getHolidays(country: String) {
+        holidaysList.clear()
         val url = resources.getString(R.string.HOLIDAYS_BASE_URL) + resources.getString(R.string.API_KEY) + "&country=" + country + "&year=" + SimpleDateFormat("yyyy",Locale.getDefault()).format(Date())
 
         val result = StringRequest(Request.Method.GET, url, Response.Listener { response ->
