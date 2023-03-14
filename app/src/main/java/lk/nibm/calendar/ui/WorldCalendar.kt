@@ -49,12 +49,16 @@ class WorldCalendar : AppCompatActivity() {
 
     private var userCountry: String? = null
     private var countryId: String? = null
+    private var countryIdSelected: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_world_calendar)
 
         initializeComponents()
+
+        countryId = intent.getStringExtra("countryId")
+        getHolidays(countryId.toString())
 
         fusedLocation = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermission()
@@ -183,7 +187,7 @@ class WorldCalendar : AppCompatActivity() {
             val year = spinnerYear?.selectedItem.toString()
             val month = spinnerMonth?.selectedItem.toString()
             val monthNumber = Common.getMonthNumber(month)
-            getHolidays(year, monthNumber, countryId.toString())
+            getHolidays(year, monthNumber, countryIdSelected.toString())
             bottomSheetDialog.dismiss()
         }
 
@@ -205,8 +209,8 @@ class WorldCalendar : AppCompatActivity() {
                 for (i in 0 until jsonArrayCountries.length()){
                     val jsonObjectCountry = jsonArrayCountries.getJSONObject(i)
                     if (jsonObjectCountry.getString("country_name") == name){
-                        countryId = jsonObjectCountry.getString("iso-3166").toString()
-                        getHolidays(countryId.toString())
+                        countryIdSelected = jsonObjectCountry.getString("iso-3166").toString()
+                        dialog.dismiss()
                     }
                 }
             }catch (e: Exception){
@@ -266,6 +270,11 @@ class WorldCalendar : AppCompatActivity() {
                     recyclerViewWorldCalendar.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     recyclerViewWorldCalendar.adapter = adapter
                     adapter.notifyDataSetChanged()
+                    if (holidaysList.size == 0){
+                        txtNoHolidaysFound.visibility = View.VISIBLE
+                    } else {
+                        txtNoHolidaysFound.visibility = View.GONE
+                    }
                     dialog.dismiss()
                 } else {
                     holidaysList.clear()
@@ -318,6 +327,11 @@ class WorldCalendar : AppCompatActivity() {
                 recyclerViewWorldCalendar.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 recyclerViewWorldCalendar.adapter = adapter
                 adapter.notifyDataSetChanged()
+                if (holidaysList.size == 0){
+                    txtNoHolidaysFound.visibility = View.VISIBLE
+                } else {
+                    txtNoHolidaysFound.visibility = View.GONE
+                }
                 dialog.dismiss()
 
             }catch (e: Exception){

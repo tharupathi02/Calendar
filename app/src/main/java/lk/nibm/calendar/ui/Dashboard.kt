@@ -134,6 +134,7 @@ class Dashboard : AppCompatActivity() {
         }
         cardWorldCalendar.setOnClickListener {
             val intent = Intent(this, WorldCalendar::class.java)
+            intent.putExtra("countryId", countryId)
             startActivity(intent)
         }
     }

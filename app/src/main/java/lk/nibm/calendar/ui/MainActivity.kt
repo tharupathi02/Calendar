@@ -17,6 +17,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
+import lk.nibm.calendar.Common.NetworkConnection
 import lk.nibm.calendar.R
 import java.util.*
 
@@ -29,16 +31,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var requestLauncher: ActivityResultLauncher<String>
     var isNotificationPermissionGranted: Boolean = false
 
+    private lateinit var checkConnection : NetworkConnection
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        fusedLocation = LocationServices.getFusedLocationProviderClient(this)
 
-        getWindow().setFlags(
+        window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        fusedLocation = LocationServices.getFusedLocationProviderClient(this)
 
         // Initialize the requestLauncher with the registerForActivityResult() method.
         requestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -69,11 +72,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToDashboard() {
-        Handler().postDelayed({
-            val intent = Intent(this, Dashboard::class.java)
-            startActivity(intent)
-            finish()
-        }, 2000)
+        checkConnection = NetworkConnection(application)
+        checkConnection.observe(this) {
+            if (it) {
+                Handler().postDelayed({
+                    val intent = Intent(this, Dashboard::class.java)
+                    startActivity(intent)
+                    finish()
+                }, 2000)
+            } else {
+                Toast.makeText(this, "Not Connected", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

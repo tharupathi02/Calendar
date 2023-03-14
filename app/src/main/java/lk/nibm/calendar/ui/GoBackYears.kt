@@ -231,6 +231,11 @@ class GoBackYears : AppCompatActivity() {
                     recyclerViewBackYears.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     recyclerViewBackYears.adapter = adapter
                     adapter.notifyDataSetChanged()
+                    if (holidaysList.size == 0){
+                        txtNoHolidaysFound.visibility = View.VISIBLE
+                    } else {
+                        txtNoHolidaysFound.visibility = View.GONE
+                    }
                     dialog.dismiss()
                 } else {
                     holidaysList.clear()
@@ -283,6 +288,11 @@ class GoBackYears : AppCompatActivity() {
                 recyclerViewBackYears.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 recyclerViewBackYears.adapter = adapter
                 adapter.notifyDataSetChanged()
+                if (holidaysList.size == 0){
+                    txtNoHolidaysFound.visibility = View.VISIBLE
+                } else {
+                    txtNoHolidaysFound.visibility = View.GONE
+                }
                 dialog.dismiss()
 
             }catch (e: Exception){
