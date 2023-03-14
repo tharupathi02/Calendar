@@ -120,7 +120,7 @@
                     android:text="@string/_00"
                     android:format12Hour="hh"
                     android:format24Hour="hh"
-                    android:textSize="60sp"
+                    android:textSize="65sp"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/white"
@@ -133,11 +133,12 @@
                     android:text="@string/_00"
                     android:format12Hour=":mm"
                     android:format24Hour=":mm"
-                    android:textSize="35sp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:fontFamily="@font/poppins_bold"
-                    android:layout_toEndOf="@id/txtHour"/>
+                    android:layout_toEndOf="@id/txtHour"
+                    android:translationY="10dp"/>
 
                 <TextClock
                     android:id="@+id/txtSec"
@@ -146,13 +147,12 @@
                     android:text="@string/_00"
                     android:format12Hour=":ss"
                     android:format24Hour=":ss"
-                    android:textSize="35sp"
+                    android:textSize="30sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_toEndOf="@id/txtHour"
-                    android:layout_below="@id/txtMin"
-                    android:translationY="-10dp"/>
+                    android:layout_below="@id/txtMin"/>
 
                 <TextClock
                     android:id="@+id/txtAMPM"
@@ -167,7 +167,7 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_below="@id/txtHour"
-                    android:translationY="-5dp"/>
+                    android:translationY="-15dp"/>
 
             </RelativeLayout>
 
